@@ -1,3 +1,3 @@
 module github.com/jpshrader/gcp-pub-sub
 
-go 1.20
+go 1.21
