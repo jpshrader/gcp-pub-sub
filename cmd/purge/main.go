@@ -45,5 +45,5 @@ func main() {
 		log.Printf("deleted subscription: %v", sub)
 	}
 
-	log.Println("purged all topics and subscriptions")
+	log.Println("deleted all topics and subscriptions")
 }

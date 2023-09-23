@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"sync"
 	"time"
 
 	"cloud.google.com/go/pubsub"
@@ -27,8 +28,9 @@ const (
 	synchronous            = true
 
 	// Settings
-	numMessagesToPublish = 2
-	timeToProcessMessage = 2 * time.Second
+	numMessagesToPublish      = 2
+	timeBetweenMessagePublish = 0 * time.Second
+	timeToProcessMessage      = 2 * time.Second
 )
 
 func createMessage(messageNum int) pubsub.Message {
@@ -73,15 +75,28 @@ func main() {
 		log.Fatalf("failed to create subscription: %v", err)
 	}
 
-	for i := 0; i < numMessagesToPublish; i++ {
-		err := publishMessage(ctx, topic, createMessage(i))
-		if err != nil {
-			log.Fatalf("failed to publish message: %v", err)
+	var wg sync.WaitGroup
+	wg.Add(1)
+	func() {
+		for i := 0; i < numMessagesToPublish; i++ {
+			if timeBetweenMessagePublish > time.Duration(0) {
+				time.Sleep(timeBetweenMessagePublish)
+			}
+			err := publishMessage(ctx, topic, createMessage(i))
+			if err != nil {
+				log.Fatalf("failed to publish message: %v", err)
+			}
 		}
-	}
-	log.Println("published all messages")
+		log.Println("published all messages")
+	}()
 
-	receiveMessages(ctx, subscription)
+	wg.Add(1)
+	func() {
+		receiveMessages(ctx, subscription)
+	}()
+
+	wg.Wait()
+	log.Println("done")
 }
 
 func createTopic(ctx context.Context, client *pubsub.Client, topicID string) (*pubsub.Topic, error) {
@@ -168,9 +183,9 @@ func receiveMessages(ctx context.Context, subscription *pubsub.Subscription) {
 			return
 		}
 
-		log.Printf("message: %d, attempt #%d ✅\n", messageCount, deliveryAttempt)
 		time.Sleep(timeToProcessMessage)
 		msg.Ack()
+		log.Printf("message: %d, attempt #%d ✅\n", messageCount, deliveryAttempt)
 	})
 	if err != nil {
 		log.Printf("error receiving messages: %v", err)
