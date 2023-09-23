@@ -1,11 +1,8 @@
 run:
 	go run main.go
 
-benchmark:
-	go test -bench=. -benchmem ./...
-
-test:
-	go test -cover ./...
+purge:
+	go run cmd/purge/main.go
 
 update:
 	go get -u
