@@ -4,5 +4,4 @@ A playground application to experiment with how Google Pub/Sub settings impact h
 
 Requirements:
 
-1. [Docker](https://www.docker.com/)
-2. [VS Code](https://code.visualstudio.com/docs/devcontainers/containers#_installation)
+1. [VS Code with Dev Container](https://code.visualstudio.com/docs/devcontainers/containers#_installation)
