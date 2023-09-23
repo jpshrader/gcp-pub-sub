@@ -1,3 +1,8 @@
 # Google Pub Sub Experiments
 
-A tutorial/experiment project for interacting with Google Cloud Pub/Sub in Golang
+A playground application to experiment with how Google Pub/Sub settings impact how your system processes messages
+
+Requirements:
+
+1. [Docker](https://www.docker.com/)
+2. [VS Code](https://code.visualstudio.com/docs/devcontainers/containers#_installation)
