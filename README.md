@@ -1,4 +1,4 @@
-# Google Pub Sub Experiments
+# Google Pub/Sub Labratory
 
 A playground application to experiment with how Google Pub/Sub settings impact how your system processes messages
 
