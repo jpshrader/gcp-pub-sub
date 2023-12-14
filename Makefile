@@ -1,9 +1,9 @@
 run:
-	go run main.go
+    go run main.go
 
 purge:
-	go run cmd/purge/main.go
+    go run cmd/purge/main.go
 
 update:
-	go get -u
-	go mod tidy
+    go get -u
+    go mod tidy
